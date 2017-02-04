@@ -13,14 +13,20 @@ import numpy as np
 
 from tflearn.data_utils import build_hdf5_image_dataset
 
+# This file has been explained in Instructions.txt
 dataset_file = 'training.txt'
 test_dataset_file = 'validation_test.txt'
 size1 = 128
 size2 = 128
+
+# Building the h5py dataset
 build_hdf5_image_dataset(dataset_file,image_shape=(size1,size2),mode='file',output_path='training_dataset.h5',categorical_labels = True)
 h5f = h5py.File('training_dataset.h5','r')
 build_hdf5_image_dataset(test_dataset_file,image_shape=(size1,size2),mode='file',output_path='validation_dataset.h5',categorical_labels = True)
 h5f1 = h5py.File('swachh_validation_dataset.h5','r')
+
+# Reading from the dataset
+# 'X' are all the images and 'Y' are all the labels corresponding to those images
 X = h5f['X']
 Y = h5f['Y']
 X_test = h5f1['X']
@@ -30,7 +36,7 @@ img_prep = ImagePreprocessing()
 img_prep.add_featurewise_zero_center()
 img_prep.add_featurewise_stdnorm()
 
-# Real-time data augmentation
+# Real-time data augmentation - flipping and randomly rotating images to create more data
 img_aug = ImageAugmentation()
 img_aug.add_random_flip_leftright()
 img_aug.add_random_rotation(max_angle=25.)
@@ -46,11 +52,12 @@ network = max_pool_2d(network, 2)
 network = max_pool_2d(network, 2)
 
 network = fully_connected(network, 512, activation='relu')
+# Dropout to take care of overfitting
 network = dropout(network, 0.5)
 
 network = fully_connected(network, 2, activation='softmax')
 
-network = regression(network, optimizer = 'adam',loss = 'categorical_crossentropy',learning_rat e =0.0001)
+network = regression(network, optimizer = 'adam',loss = 'categorical_crossentropy',learning_rate =0.0001)
 
 # Train using classifier
 model = tflearn.DNN(network, tensorboard_verbose=0,best_checkpoint_path='.')
