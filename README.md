@@ -1,2 +1,3 @@
 # Convoluted-Neural-Network
 This is a project which uses Tensorflow, Tflearn, CuDNN and CUDA for the convoluted neural network to recognize and classify images.
+Our goal is to be able to successfully classify images into images containing garbage and images free of garbage. This is a unique problem in itself as it hasn't been done before. The complexity of this project is amplified by the fact that the dataset isn't as large as other solutions proposed and it is very varied. Some examples of such variations include the garbage heap having all kinds of objects, the garbage heap concentrated on one part of the image while the other part is clean etc. We have used h5py to build the dataset for training and validation sets.
