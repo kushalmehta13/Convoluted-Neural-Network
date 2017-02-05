@@ -15,15 +15,16 @@ from tflearn.data_utils import build_hdf5_image_dataset
 
 # This file has been explained in Instructions.txt
 dataset_file = 'training.txt'
-test_dataset_file = 'validation_test.txt'
+test_dataset_file = 'validation.txt'
 size1 = 128
 size2 = 128
 
 # Building the h5py dataset
 build_hdf5_image_dataset(dataset_file,image_shape=(size1,size2),mode='file',output_path='training_dataset.h5',categorical_labels = True)
 h5f = h5py.File('training_dataset.h5','r')
+
 build_hdf5_image_dataset(test_dataset_file,image_shape=(size1,size2),mode='file',output_path='validation_dataset.h5',categorical_labels = True)
-h5f1 = h5py.File('swachh_validation_dataset.h5','r')
+h5f1 = h5py.File('validation_dataset.h5','r')
 
 # Reading from the dataset
 # 'X' are all the images and 'Y' are all the labels corresponding to those images
