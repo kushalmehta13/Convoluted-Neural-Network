@@ -73,14 +73,14 @@ count_negative_true = 0
 for i in range(len(prediction)):
 	if (prediction[i][0] > prediction[i][1]):
 		# Count it as positive only if it is truly positive
-		# The number 50 represents the number of positive images given by us for testing the accuracy
-		if (i < 50):
+		# The number 100 represents the number of positive images given by us for testing the accuracy
+		if (i < 100):
 			count_positive_true += 1
 	else:
 		# Count it as positive only if it is truly negative
-		# Another 50 negative images were also given
-		if (i >= 50):
+		# Another 100 negative images were also given
+		if (i >= 100):
 			count_negative_true += 1
 			
 # Print the accuracy of the CNN using the confusion matrix
-printf("Accuracy of the trained CNN is:" + str((count_positive_true+count_negative_true)/100))
+print("Accuracy of the trained CNN is:" + str((count_positive_true+count_negative_true)/200))

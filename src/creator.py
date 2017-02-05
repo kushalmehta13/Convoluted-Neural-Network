@@ -25,9 +25,9 @@ for i in range(len(directories)):
 		label = 1
 
 	if (i == 0 or i == 1):
-		generated = "training.txt"
-	else:
 		generated = "validation.txt"
+	else:
+		generated = "training.txt"
 
 	l = []
 	f = open(generated,'a')
