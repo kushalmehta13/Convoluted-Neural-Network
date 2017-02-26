@@ -78,7 +78,11 @@ for i in range(len(prediction)):
 			count_positive_true += 1
 	else:
 		# Count it as positive only if it is truly negative
+<<<<<<< HEAD
 		# Another 50 negative images were also given
+=======
+		# Another 100 negative images were also given
+>>>>>>> d5d1ce586b9451fe7734918eb76665d4a15520d1
 		if (i >= 100):
 			count_negative_true += 1
 			
