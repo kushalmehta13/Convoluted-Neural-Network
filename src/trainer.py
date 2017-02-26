@@ -7,12 +7,15 @@ from tflearn.layers.conv import conv_2d, max_pool_2d
 from tflearn.layers.estimator import regression
 from tflearn.data_preprocessing import ImagePreprocessing
 from tflearn.data_augmentation import ImageAugmentation
+import tensorflow as tf
+#import tflearn.helpers.summarizer as s
 import h5py
 import scipy
 import numpy as np
 
 from tflearn.data_utils import build_hdf5_image_dataset
 
+# tflearn.summaries.get_summary('image','images')
 # This file has been explained in Instructions.txt
 dataset_file = 'training.txt'
 test_dataset_file = 'validation.txt'
@@ -42,15 +45,24 @@ img_aug = ImageAugmentation()
 img_aug.add_random_flip_leftright()
 img_aug.add_random_rotation(max_angle=25.)
 
+# Add the summary file writer
+writer = tf.summary.FileWriter('/tmp/tflearn_logs/garbage_test/',graph=None,max_queue=10,flush_secs=120,graph_def=None)
+
 # Convolutional network building
 network = input_data(shape=[None, size1, size2, 3], data_preprocessing=img_prep, data_augmentation=img_aug)
-network = conv_2d(network, 10, 16, activation='relu')
-network = conv_2d(network, 10, 16, activation='relu')
-network = conv_2d(network, 10, 16, activation='relu')
+network = conv_2d(network, 20, 5, activation='relu')
+summary_output = tf.summary.image("Convolution 1", network, max_outputs=4)
+network=  max_pool_2d(network, 2)
+network = conv_2d(network, 20, 7, activation='relu')
+network = max_pool_2d(network, 2)
+network = conv_2d(network, 20, 9, activation='relu')
+network = max_pool_2d(network, 2)
+network = conv_2d(network, 20, 11,activation='relu')
+network = max_pool_2d(network, 2)
 
-network = max_pool_2d(network, 2)
-network = max_pool_2d(network, 2)
-network = max_pool_2d(network, 2)
+#network = max_pool_2d(network, 2)
+#network = max_pool_2d(network, 2)
+#network = max_pool_2d(network, 2)
 
 network = fully_connected(network, 512, activation='relu')
 # Dropout to take care of overfitting
@@ -58,11 +70,13 @@ network = dropout(network, 0.5)
 
 network = fully_connected(network, 2, activation='softmax')
 
-network = regression(network, optimizer = 'adam',loss = 'categorical_crossentropy',learning_rate =0.0001)
+network = regression(network, optimizer = 'adam',loss = 'categorical_crossentropy',learning_rate =0.0002)
 
+#writer.add_summary(summary_output)
 # Train using classifier
-model = tflearn.DNN(network, tensorboard_verbose=0,best_checkpoint_path='.')
-model.fit(X, Y, n_epoch=50, shuffle=True, validation_set = (X_test,Y_test), show_metric=True, batch_size=96, run_id='faces_test')
+# Gonna remove tensorboard_verbose parameter
+model = tflearn.DNN(network, best_checkpoint_path='.')
+model.fit(X, Y, n_epoch=10, shuffle=True, validation_set = (X_test,Y_test), show_metric=True, batch_size=96, run_id='garbage_test')
 
 #Save the model
 model.save("model.tflearn")
